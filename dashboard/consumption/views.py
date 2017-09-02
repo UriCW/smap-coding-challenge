@@ -24,6 +24,8 @@ def detail(request,UID):
     consumption=Consumption.objects.filter(user=user)
     context = {
         'uid':UID,
+        'tariff': user[0].user_tariff,
+        'area': user[0].user_area,
         'consumption':consumption,
     }
     return render(request, 'consumption/detail.html', context)
