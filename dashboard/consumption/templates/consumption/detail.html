@@ -1,5 +1,34 @@
 {% extends 'consumption/layout.html' %}
 
-{% block content %}
+{% block head %}
+    <!-- Should really be in header block -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
 
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['date', 'energy use'],
+	  {% for i in consumption %}['{{i.consumption_time}}',{{i.consumption_amount}}]{% if not forloop.last %},{% endif %}{%endfor%}
+        ]);
+
+        var options = {
+          title: 'Energy consumpion',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+{% endblock %}
+
+{% block content %}
+	<H1> Customer:{{uid}} </H1>
+ <div id="curve_chart" style="width: 90%; height: 500px"></div>
+<table border=1 width=90%>
+	<a href=/>Back to summary</a>
 {% endblock %}

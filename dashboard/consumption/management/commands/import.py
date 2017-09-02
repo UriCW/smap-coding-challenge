@@ -12,6 +12,8 @@ class Command(BaseCommand):
     containing the consumption log files, names <user_id>.csv
     @param path: Path of data/ directory
     """
+    #TODO buffer records and store in one go at the end.
+
     help = 'import data'
     def add_arguments(self, parser):
         parser.add_argument('path',nargs='+',type=str); 
