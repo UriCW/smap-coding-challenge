@@ -18,8 +18,8 @@ The summary graph displays a graph, not I am not convinced it groups by days cor
 passing the queryset directly to the template, ideally, we should format the data in the view, and pass as array. will probably also be quicker.
 
 
-Instructions:
-=============
+Instructions
+============
 1. Clone this repository:
 ```bash
 $cd /tmp
