@@ -1,11 +1,3 @@
-To import run:
-$manage.py import \<PATH\>
-
-for example
-
-$./manage.py import ../data
-
-
 Issue 1 - Time Zone.
 
 the import process assumes UK time (UTC+1 hour), this should probably be determined by the user's area.
@@ -23,3 +15,44 @@ Issue 4 - Passing QuerySet to template
 passing the queryset directly to the template, ideally, we should format the data in the view, and pass as array. will probably also be quicker.
 
 
+Instructions:
+=============
+1. Clone this repository:
+
+$cd /tmp
+
+$git clone https://github.com/UriCW/smap-coding-challenge/
+
+$cd smap-coding-challenge/
+
+2. Create a virtualenv and install django
+
+$mkdir venv
+
+$virtualenv venv
+
+$source venv/bin/activate
+
+$pip install django
+
+3. Initialise
+
+$cd dashboard
+
+$./manage.py makemigrations
+
+$./manage.py migrate
+
+4. Import CSV data
+
+$./manage.py import ../data
+
+This will take a long time (as in hours)
+
+5. Run server
+
+$./manage.py runserver
+
+6. Browse to http://localhost:8000
+
+7. Hire me!
