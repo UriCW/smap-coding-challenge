@@ -8,15 +8,13 @@ from django.db.models import Sum, Max, Min, Avg
 
 def summary(request):
     all_users=User.objects.all();
-    #time_chart_data=Consumption.objects.values('consumption_time').annotate( total=Sum('consumption_amount'), average=Avg('consumption_amount') ).order_by('consumption_time')
-    time_chart_data=Consumption.objects.extra(select={'day': 'date(consumption_time)'}).values('day').annotate( maximum=Max('consumption_amount'), average=Avg('consumption_amount') ).order_by('consumption_time')#TODO check this yelds the correct results
-
-
+    #time_chart_data=Consumption.objects.values('consumption_time').annotate( total=Sum('consumption_amount'), average=Avg('consumption_amount') ).order_by('consumption_time') #Retrives total consumption and average consumption by 30minutes slot.
+    time_chart_data=Consumption.objects.extra(select={'day': 'date(consumption_time)'}).values('day').annotate( maximum=Max('consumption_amount'), average=Avg('consumption_amount') ).order_by('consumption_time')#Retrives total consumption and average consumption by day @TODO check this is correct
+    #time_chart_data=Consumption.objects.extra({'day':"date(consumption_time)"}).values_list('day').annotate(Avg('consumption_amount'),Max('consumption_amount') )
     context = {
-        'message': 'Hello!',
         'users'  : all_users,
         'time_chart' : time_chart_data,
-    }
+    }#@TODO don't pass a queryset, format users and timechart and pass in array, then fix in template.
     return render(request, 'consumption/summary.html', context)
 
 def detail(request,UID):

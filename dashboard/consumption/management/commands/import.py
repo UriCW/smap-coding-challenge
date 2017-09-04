@@ -12,16 +12,22 @@ class Command(BaseCommand):
     containing the consumption log files, names <user_id>.csv
     @param path: Path of data/ directory
     """
-    #TODO buffer records and store in one go at the end.
+    help = """
+        import customer data from CSV to django's database.
+        
+        usage: manage.py import <PATH>
+        
+        where path is the root directory containing user_data.csv 
+        and a subdirectory consumption/ containing the consumption log CSVs
+        """
 
-    help = 'import data'
     def add_arguments(self, parser):
         parser.add_argument('path',nargs='+',type=str); 
 
     def import_users(self,path):
         #Imports user_data.csv to model.User
         file_name=path+"/user_data.csv";
-        print("Importing users in "+file_name);
+        print("Importing users in "+file_name+" this could take a while...");
         with open(file_name) as ud:
             contents=ud.readlines()[1:] #Skip header line
         for line in contents:
@@ -41,12 +47,14 @@ class Command(BaseCommand):
                 ts=parse_datetime(time_stamp +"+01:00") #TODO fix timezone (Always assumes UTC+1 , UK Time).
                 consumption=Consumption(user=user,consumption_time=ts,consumption_amount=amount)
                 consumption.save()
-                print(uid+" - "+str(ts) )
 
     def handle(self, *args, **options):
         path=options['path'][0]
         try:
             self.import_users(path)
+        except IOError as e:
+            print "IO Error, did you provide the correct path?"
+            raise
         except:
             print("All errors in one pass, guess which one?")
             raise
